@@ -54,14 +54,9 @@ export async function getMyJobs(
       .filter((j) => j.bookingId !== null)
       .map((j) => {
         const obj = j.toJSON();
-        if (
-          obj.bookingId &&
-          typeof obj.bookingId === "object" &&
-          obj.bookingId.customerId
-        ) {
-          obj.bookingId.customerId = decryptPopulatedUser(
-            obj.bookingId.customerId,
-          );
+        const bookingId = obj.bookingId as any;
+        if (bookingId && typeof bookingId === "object" && bookingId.customerId) {
+          bookingId.customerId = decryptPopulatedUser(bookingId.customerId);
         }
         return obj;
       });

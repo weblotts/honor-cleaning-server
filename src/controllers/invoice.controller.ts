@@ -268,7 +268,7 @@ export async function payInvoice(req: Request, res: Response, next: NextFunction
     });
 
     // Store the PaymentIntent ID on the invoice for refund support
-    invoice.stripePaymentIntentId = paymentIntentId;
+    invoice.stripePaymentIntentId = paymentIntentId ?? undefined;
     await invoice.save();
 
     res.json({ clientSecret, invoiceId: invoice._id });

@@ -169,7 +169,7 @@ export async function listFeedback(req: Request, res: Response): Promise<void> {
       try { obj.customerName = decryptField(obj.customerName); } catch { /* keep as-is */ }
     }
     if (obj.customerId && typeof obj.customerId === 'object' && 'name' in obj.customerId) {
-      try { obj.customerId.name = decryptField(obj.customerId.name); } catch { /* keep */ }
+      try { (obj.customerId as any).name = decryptField((obj.customerId as any).name as string); } catch { /* keep */ }
     }
     return obj;
   });

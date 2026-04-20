@@ -111,11 +111,11 @@ const userSchema = new Schema<IUserDocument>(
     timestamps: true,
     // Strip internal fields from JSON responses
     toJSON: {
-      transform(_doc, ret) {
-        delete ret.passwordHash;
-        delete ret.mfaSecret;
-        delete ret.refreshTokens;
-        delete ret.__v;
+      transform(_doc, ret: Record<string, unknown>) {
+        delete ret['passwordHash'];
+        delete ret['mfaSecret'];
+        delete ret['refreshTokens'];
+        delete ret['__v'];
         return ret;
       },
     },

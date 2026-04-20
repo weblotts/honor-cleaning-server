@@ -95,7 +95,7 @@ export async function pauseSubscription(req: Request, res: Response, next: NextF
     if (!sub) throw new AppError(404, 'Subscription not found');
 
     if (sub.stripeSubscriptionId) {
-      await getStripe().subscriptions.update(sub.stripeSubscriptionId, {
+      await getStripe()!.subscriptions.update(sub.stripeSubscriptionId, {
         pause_collection: { behavior: 'void' },
       });
     }
@@ -125,7 +125,7 @@ export async function cancelSubscription(req: Request, res: Response, next: Next
     if (!sub) throw new AppError(404, 'Subscription not found');
 
     if (sub.stripeSubscriptionId) {
-      await getStripe().subscriptions.cancel(sub.stripeSubscriptionId);
+      await getStripe()!.subscriptions.cancel(sub.stripeSubscriptionId);
     }
 
     sub.status = SubscriptionStatus.Cancelled;
