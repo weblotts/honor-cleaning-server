@@ -6,6 +6,7 @@ import app from './app';
 import { startDataRetentionCron } from './utils/dataRetention';
 import { startPaymentReminderCron } from './utils/paymentReminders';
 import { startBookingReminderCron } from './utils/bookingReminders';
+import { startRecurringBookingCron } from './utils/recurringBookings';
 
 const PORT = process.env.PORT || 4000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/honor-cleaning';
@@ -24,6 +25,9 @@ async function start() {
 
     // Start booking reminder cron job (24h advance notice for upcoming jobs)
     startBookingReminderCron();
+
+    // Start recurring booking generation (daily at 6 AM, 7-day lookahead)
+    startRecurringBookingCron();
 
     // Start Express server
     app.listen(PORT, () => {

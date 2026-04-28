@@ -59,6 +59,7 @@ export interface IBooking {
     squareFootage?: number;
     condition: 'normal' | 'heavy' | 'extreme';
   };
+  subscriptionId?: Types.ObjectId;
   quotedAmountCents?: number;
   quotedAt?: Date;
   quotedBy?: Types.ObjectId;
@@ -141,6 +142,7 @@ const bookingSchema = new Schema<IBookingDocument>(
     notes: { type: String },
     cancellationReason: { type: String },
     propertyDetails: { type: propertyDetailsSchema },
+    subscriptionId: { type: Schema.Types.ObjectId, ref: 'Subscription', default: null, index: true },
     quotedAmountCents: { type: Number },
     quotedAt: { type: Date },
     quotedBy: { type: Schema.Types.ObjectId, ref: 'User' },

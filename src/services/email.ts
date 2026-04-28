@@ -702,3 +702,46 @@ export async function sendBookingReminderToStaff(
     `),
   });
 }
+
+// ── Recurring Booking Scheduled Email ─────────────────────────
+
+export async function sendRecurringBookingScheduledEmail(
+  email: string,
+  data: {
+    customerName: string;
+    serviceType: string;
+    scheduledDate: string;
+    scheduledTime: string;
+    frequency: string;
+    bookingNumber: string;
+  },
+): Promise<void> {
+  const frequencyLabel: Record<string, string> = {
+    weekly: 'weekly',
+    biweekly: 'bi-weekly',
+    monthly: 'monthly',
+  };
+
+  await sendEmail({
+    to: email,
+    subject: `Your ${frequencyLabel[data.frequency] || data.frequency} cleaning is scheduled — ${data.bookingNumber}`,
+    html: brandedHtml(`
+      <h2 style="margin:0 0 16px;color:#111827;font-size:20px;">Hi ${data.customerName}!</h2>
+      <p>Your next <strong>${frequencyLabel[data.frequency] || data.frequency} cleaning</strong> has been automatically scheduled based on your maintenance plan.</p>
+      <div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:12px;padding:20px;margin:16px 0;">
+        <table style="width:100%;border-collapse:collapse;">
+          <tr><td style="padding:6px 0;color:#6b7280;font-size:14px;">Booking</td><td style="padding:6px 0;text-align:right;font-weight:600;color:${BRAND_COLOR};">${data.bookingNumber}</td></tr>
+          <tr><td style="padding:6px 0;color:#6b7280;font-size:14px;">Service</td><td style="padding:6px 0;text-align:right;font-weight:600;text-transform:capitalize;">${data.serviceType}</td></tr>
+          <tr><td style="padding:6px 0;color:#6b7280;font-size:14px;">Date</td><td style="padding:6px 0;text-align:right;font-weight:600;">${data.scheduledDate}</td></tr>
+          <tr><td style="padding:6px 0;color:#6b7280;font-size:14px;">Time</td><td style="padding:6px 0;text-align:right;font-weight:600;">${data.scheduledTime}</td></tr>
+          <tr><td style="padding:6px 0;color:#6b7280;font-size:14px;">Plan</td><td style="padding:6px 0;text-align:right;font-weight:600;text-transform:capitalize;">${frequencyLabel[data.frequency] || data.frequency}</td></tr>
+        </table>
+      </div>
+      <p style="color:#374151;font-size:14px;">We are reviewing your booking and will confirm your assigned cleaner shortly. You can track everything from your dashboard.</p>
+      <p style="text-align:center;margin:24px 0;">
+        ${button(`${CLIENT_URL()}/dashboard`, 'View in Dashboard')}
+      </p>
+      <p style="color:#6b7280;font-size:13px;">Need to reschedule or cancel? You can manage your plan anytime from your dashboard or contact us at (508) 333-1838.</p>
+    `),
+  });
+}
