@@ -43,53 +43,65 @@ function decryptBooking(booking: any): any {
   return obj;
 }
 
-// Service pricing in cents
+// Service pricing in cents (residential fixed; commercial requires a custom quote)
 const PRICING: Record<string, number> = {
-  standard: 15000, // $150
-  deep: 25000, // $250
-  moveIn: 30000, // $300
-  moveOut: 30000, // $300
-  recurring: 12000, // $120
+  standard: 15000,        // $150
+  deep: 25000,            // $250
+  moveIn: 30000,          // $300
+  moveOut: 30000,         // $300
+  recurring: 12000,       // $120
+  office: 0,              // quoted
+  retail: 0,              // quoted
+  medical: 0,             // quoted
+  industrial: 0,          // quoted
+  postConstruction: 0,    // quoted
 };
 
 
 // Default checklists by service type
 const CHECKLISTS: Record<string, string[]> = {
+  // ── Residential ──
   standard: [
-    'Vacuum all floors',
+    'Vacuum all floors & rugs',
     'Mop hard floors',
-    'Clean bathrooms',
-    'Clean kitchen surfaces',
-    'Dust all surfaces',
-    'Empty trash',
+    'Clean & sanitize bathrooms',
+    'Wipe kitchen counters & exterior appliances',
+    'Dust all surfaces & furniture',
+    'Empty all trash bins',
+    'Clean mirrors & glass',
   ],
   deep: [
-    'Vacuum all floors',
+    'Vacuum all floors & rugs',
     'Mop hard floors',
-    'Deep clean bathrooms (scrub grout)',
-    'Deep clean kitchen (inside oven/fridge)',
-    'Clean inside cabinets',
-    'Wash windows (interior)',
-    'Dust blinds and fans',
-    'Clean baseboards',
+    'Deep clean bathrooms (scrub grout, toilet base)',
+    'Deep clean kitchen (inside oven, fridge & microwave)',
+    'Clean inside cabinets & drawers',
+    'Wash interior windows & window sills',
+    'Dust blinds, fans & light fixtures',
+    'Wipe baseboards & door frames',
     'Sanitize light switches & door handles',
+    'Clean mirrors & glass',
   ],
   moveIn: [
     'Full deep clean all rooms',
-    'Clean inside all cabinets/closets',
-    'Clean inside appliances',
-    'Wash all windows',
-    'Clean garage/storage area',
-    'Sanitize all surfaces',
+    'Clean inside all cabinets & closets',
+    'Clean inside all appliances',
+    'Wash all interior windows',
+    'Wipe walls & baseboards',
+    'Sanitize all surfaces & fixtures',
+    'Vacuum & mop all floors',
   ],
   moveOut: [
     'Full deep clean all rooms',
-    'Clean inside all cabinets/closets',
-    'Clean inside appliances',
-    'Wash all windows',
-    'Patch nail holes (minor)',
-    'Remove all debris',
+    'Clean inside all cabinets & closets',
+    'Clean inside all appliances',
+    'Wash all interior windows',
+    'Wipe walls & baseboards',
+    'Remove all debris & trash',
+    'Vacuum & mop all floors',
+    'Final walkthrough inspection',
   ],
+  // ── Commercial ──
   office: [
     'Vacuum all floors & carpets',
     'Mop hard floors',
@@ -99,6 +111,46 @@ const CHECKLISTS: Record<string, string[]> = {
     'Empty all trash & recycling bins',
     'Dust surfaces, vents & blinds',
     'Clean glass doors & partitions',
+    'Sanitize high-touch areas (handles, switches)',
+  ],
+  retail: [
+    'Sweep & mop sales floor',
+    'Vacuum carpeted areas',
+    'Clean & polish front entrance & glass doors',
+    'Dust display fixtures & shelving',
+    'Clean fitting rooms',
+    'Sanitize checkout counters & payment terminals',
+    'Clean & sanitize restrooms',
+    'Empty all trash bins',
+    'Clean back-of-house / stockroom floors',
+  ],
+  medical: [
+    'Clean & disinfect exam rooms (EPA-approved products)',
+    'Sanitize high-touch surfaces (handles, switches, rails)',
+    'Clean & disinfect restrooms',
+    'Vacuum & mop all floors',
+    'Wipe waiting area chairs & tables',
+    'Clean reception desk & counters',
+    'Empty & sanitize all trash receptacles',
+    'Clean interior glass & mirrors',
+  ],
+  industrial: [
+    'Sweep & scrub warehouse floor',
+    'Clean loading dock areas',
+    'Remove dust & debris from equipment areas',
+    'Empty all industrial waste bins',
+    'Clean staff restrooms & break rooms',
+    'Wipe down workbenches & surfaces',
+    'Clean interior windows & skylights (if accessible)',
+  ],
+  postConstruction: [
+    'Remove all construction debris & dust',
+    'Deep clean all floors (scrub & mop)',
+    'Wipe all surfaces, ledges & windowsills',
+    'Clean interior glass & windows',
+    'Clean & sanitize restrooms',
+    'Vacuum all vents & air returns',
+    'Final detail wipe of all fixtures',
   ],
   recurring: [
     'Vacuum all floors',
